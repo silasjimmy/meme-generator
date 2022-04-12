@@ -21,6 +21,7 @@ class QuoteModel:
 class IngestorInterface(ABC):
     """Ingestor interface class definition."""
 
+    @classmethod
     def can_ingest(cls, path: str) -> bool:
         """Can ingest.
 
@@ -30,8 +31,9 @@ class IngestorInterface(ABC):
         Returns:
             bool: can ingest
         """
-        pass
+        return True
 
+    @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """Parse.
 
@@ -41,4 +43,4 @@ class IngestorInterface(ABC):
         Returns:
             list: a list of QuoteModel objects
         """
-        pass
+        return []
