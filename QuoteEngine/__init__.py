@@ -1,6 +1,6 @@
 """"""
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import List
 
 
@@ -21,9 +21,10 @@ class QuoteModel:
         """Returns:
             str: string representation of the object
         """
-        return f"\"{self.body}\" - {self.author}"
+        return f"{self.body} - {self.author}"
 
 
+# Not implemented
 class IngestorInterface(ABC):
     """Ingestor interface class definition."""
 
@@ -40,6 +41,7 @@ class IngestorInterface(ABC):
         return True
 
     @classmethod
+    @abstractmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """Parse.
 
@@ -50,6 +52,34 @@ class IngestorInterface(ABC):
             list: a list of QuoteModel objects
         """
         return []
+
+
+class TextIngestor(IngestorInterface):
+    """Class definition to import quotes from text documents."""
+
+    @classmethod
+    def parse(cls, path: str) -> List[QuoteModel]:
+        """Extract quotes from text documents and create QuoteModel objects.
+        
+        Returns:
+            quotes (list): list of QUoteModel objects
+        """
+        try:
+            with open(path, 'r') as infile:
+                contents = infile.read()
+                contents = contents.split("\n")
+                quotes = []
+
+                for line in contents:
+                    line = line.split("-")
+                    if len(line) == 2:
+                        body, author = tuple(line)
+                        quote = QuoteModel(body.strip(), author.strip())
+                        quotes.append(quote)
+
+            return quotes
+        except Exception as e:
+            print(e)
 
 
 class CSVImporter(IngestorInterface):
@@ -64,11 +94,6 @@ class DocxImporter(IngestorInterface):
 
 class PDFImporter(IngestorInterface):
     """Class definition to import quotes from pdf documents."""
-    pass
-
-
-class TextImporter(IngestorInterface):
-    """Class definition to import quotes from text documents."""
     pass
 
 

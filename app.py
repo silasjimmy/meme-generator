@@ -2,21 +2,25 @@ import random
 import os
 import requests
 from flask import Flask, render_template, abort, request
+from QuoteEngine import TextIngestor
 
 # @TODO Import your Ingestor and MemeEngine classes
 
 app = Flask(__name__)
 
-meme = MemeEngine('./static')
+# meme = MemeEngine('./static')
+meme = ''
 
 
 def setup():
     """ Load all resources """
 
-    quote_files = ['./_data/DogQuotes/DogQuotesTXT.txt',
-                   './_data/DogQuotes/DogQuotesDOCX.docx',
-                   './_data/DogQuotes/DogQuotesPDF.pdf',
-                   './_data/DogQuotes/DogQuotesCSV.csv']
+    quote_files = [
+        './_data/DogQuotes/DogQuotesTXT.txt',
+        './_data/DogQuotes/DogQuotesDOCX.docx',
+        './_data/DogQuotes/DogQuotesPDF.pdf',
+        './_data/DogQuotes/DogQuotesCSV.csv'
+    ]
 
     # TODO: Use the Ingestor class to parse all files in the
     # quote_files variable
@@ -72,4 +76,7 @@ def meme_post():
 
 
 if __name__ == "__main__":
-    app.run()
+    # app.run()
+    c = TextIngestor.parse(
+        os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.txt'))
+    print(c)
