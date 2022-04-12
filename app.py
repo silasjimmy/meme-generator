@@ -2,7 +2,7 @@ import random
 import os
 import requests
 from flask import Flask, render_template, abort, request
-from QuoteEngine import TextIngestor
+from QuoteEngine import TextIngestor, DocxIngestor, PDFIngestor, CSVIngestor
 
 # @TODO Import your Ingestor and MemeEngine classes
 
@@ -77,6 +77,12 @@ def meme_post():
 
 if __name__ == "__main__":
     # app.run()
-    c = TextIngestor.parse(
-        os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.txt'))
-    print(c)
+    # c = TextIngestor.parse(
+    #     os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.txt'))
+    d = DocxIngestor.parse(
+        os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.docx'))
+    # p = PDFIngestor.parse(
+    #     os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.pdf'))
+    # c = CSVIngestor.parse(
+    #     os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.csv'))
+    print(d)
