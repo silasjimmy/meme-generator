@@ -17,6 +17,12 @@ class QuoteModel:
         self.body = body
         self.author = author
 
+    def __repr__(self) -> str:
+        """Returns:
+            str: string representation of the object
+        """
+        return f"\"{self.body}\" - {self.author}"
+
 
 class IngestorInterface(ABC):
     """Ingestor interface class definition."""
@@ -44,3 +50,28 @@ class IngestorInterface(ABC):
             list: a list of QuoteModel objects
         """
         return []
+
+
+class CSVImporter(IngestorInterface):
+    """Class definition to import quotes from csv documents."""
+    pass
+
+
+class DocxImporter(IngestorInterface):
+    """Class definition to import quotes from docx documents."""
+    pass
+
+
+class PDFImporter(IngestorInterface):
+    """Class definition to import quotes from pdf documents."""
+    pass
+
+
+class TextImporter(IngestorInterface):
+    """Class definition to import quotes from text documents."""
+    pass
+
+
+class Ingestor(IngestorInterface):
+    """"""
+    pass
