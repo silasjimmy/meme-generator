@@ -1,4 +1,4 @@
-""""""
+"""Class to instantiate quote objects."""
 
 
 class QuoteModel:

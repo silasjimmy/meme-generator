@@ -1,4 +1,4 @@
-""""""
+"""This module encapsulates all ingestors to load text, docx, pdf and csv files"""
 
 from abc import ABC, abstractmethod
 from typing import List
@@ -10,7 +10,7 @@ import subprocess
 
 class IngestorInterface(ABC):
     """Ingestor interface class definition."""
-    acceptable_file_extension = ''
+    file_extension = ''
 
     @classmethod
     def can_ingest(cls, path: str) -> bool:
@@ -22,7 +22,7 @@ class IngestorInterface(ABC):
         Returns:
             bool: True if the file can be ingested, False otherwise
         """
-        return path.endswith(cls.acceptable_file_extension)
+        return path.endswith(cls.file_extension)
 
     @classmethod
     @abstractmethod
@@ -40,13 +40,13 @@ class IngestorInterface(ABC):
 
 class TextIngestor(IngestorInterface):
     """Class definition to import quotes from text documents."""
+    file_extension = '.txt'
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """Extract quotes from text documents and create QuoteModel objects.
-        
         Returns:
-            quotes (list): list of QUoteModel objects
+            quotes (list): list of QuoteModel objects
         """
         try:
             with open(path, 'r') as infile:
@@ -68,13 +68,13 @@ class TextIngestor(IngestorInterface):
 
 class DocxIngestor(IngestorInterface):
     """Class definition to import quotes from docx documents."""
+    file_extension = '.docx'
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """Extract quotes from docx documents and create QuoteModel objects.
-        
         Returns:
-            quotes (list): list of QUoteModel objects
+            quotes (list): list of QuoteModel objects
         """
         try:
             document = Document(path)
@@ -94,13 +94,13 @@ class DocxIngestor(IngestorInterface):
 
 class PDFIngestor(IngestorInterface):
     """Class definition to import quotes from pdf documents."""
+    file_extension = '.pdf'
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """Extract quotes from docx documents and create QuoteModel objects.
-        
         Returns:
-            quotes (list): list of QUoteModel objects
+            quotes (list): list of QuoteModel objects
         """
         try:
             # Using the '-' argument in order to send the text to the stdout
@@ -126,13 +126,13 @@ class PDFIngestor(IngestorInterface):
 
 class CSVIngestor(IngestorInterface):
     """Class definition to import quotes from csv documents."""
+    file_extension = '.csv'
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """Extract quotes from docx documents and create QuoteModel objects.
-        
         Returns:
-            quotes (list): list of QUoteModel objects
+            quotes (list): list of QuoteModel objects
         """
         try:
             dataframe = read_csv(path)
@@ -156,5 +156,26 @@ class CSVIngestor(IngestorInterface):
 
 
 class Ingestor(IngestorInterface):
-    """"""
-    pass
+    """Load quotes from txt, docx, pdf and csv files and create QuoteModel objects"""
+
+    @classmethod
+    def parse(cls, path: str) -> List[QuoteModel]:
+        """Parse quotes from documents and create QuoteModel objects.
+        Returns:
+            quotes (list): list of QuoteModel objects
+        """
+        try:
+            quotes = []
+
+            if TextIngestor.can_ingest(path):
+                quotes = TextIngestor.parse(path)
+            elif DocxIngestor.can_ingest(path):
+                quotes = DocxIngestor.parse(path)
+            elif PDFIngestor.can_ingest(path):
+                quotes = PDFIngestor.parse(path)
+            elif CSVIngestor.can_ingest(path):
+                quotes = CSVIngestor.parse(path)
+
+            return quotes
+        except Exception as e:
+            print(e)
