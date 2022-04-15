@@ -2,7 +2,7 @@ import random
 import os
 import requests
 from flask import Flask, render_template, abort, request
-from QuoteEngine import TextIngestor, DocxIngestor, PDFIngestor, CSVIngestor
+from QuoteEngine.Ingestor import TextIngestor, DocxIngestor, PDFIngestor, CSVIngestor
 
 # @TODO Import your Ingestor and MemeEngine classes
 

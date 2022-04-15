@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import List
 from docx import Document
 from pandas import read_csv
-from QuoteModel import QuoteModel
+from QuoteEngine.QuoteModel import QuoteModel
 import subprocess
 
 
