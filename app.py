@@ -3,6 +3,7 @@ import os
 import requests
 from flask import Flask, render_template, abort, request
 from quoteengine.ingestor import Ingestor
+from memegenerator.memeengine import MemeEngine
 
 # @TODO Import your Ingestor and MemeEngine classes
 
@@ -77,8 +78,6 @@ def meme_post():
 
 if __name__ == "__main__":
     # app.run()
-    p1 = os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.txt')
-    p2 = os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.docx')
-    p3 = os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.pdf')
-    p4 = os.path.join(os.getcwd(), '_data/SimpleLines/SimpleLines.csv')
-    print(Ingestor.parse(p4))
+    p1 = os.path.join(os.getcwd(), '_data/photos/dog/xander_1.jpg')
+    print(
+        MemeEngine('memes').make_meme(p1, 'That is my titty bar', 'Gangster'))

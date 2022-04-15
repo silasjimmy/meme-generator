@@ -1,4 +1,4 @@
-"""Class to instantiate quote objects."""
+"""This module creates QuoteModel objects from quotes with a body and author."""
 
 
 class QuoteModel:
