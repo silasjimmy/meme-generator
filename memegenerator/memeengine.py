@@ -51,26 +51,23 @@ class MemeEngine:
 
                 # Draw the quote to the meme image
                 text_font = ImageFont.truetype(
-                    os.path.join(os.getcwd(), 'fonts/playfair-regular.otf'),
-                    26)
+                    os.path.join(os.getcwd(), 'fonts/playfair-black.otf'), 26)
                 author_font = ImageFont.truetype(
-                    os.path.join(os.getcwd(), 'fonts/playfair-regular.otf'),
-                    18)
+                    os.path.join(os.getcwd(), 'fonts/playfair-bold.otf'), 20)
                 meme = ImageDraw.Draw(meme_image)
 
                 # Generate random text anchor
                 y_anchor = randint(50, 450)
-                x_anchor = randint(10, 250)
-                x_spacing = 20
-                y_spacing = 30
+                x_spacing = 25
+                y_spacing = 35
 
-                meme.text((x_anchor, y_anchor),
+                meme.text((10, y_anchor),
                           text, (0, 0, 0),
                           font=text_font,
                           stroke_fill=(255, 255, 255),
                           stroke_width=2)
-                meme.text((x_anchor + x_spacing, y_anchor + y_spacing),
-                          author, (0, 0, 0),
+                meme.text((10 + x_spacing, y_anchor + y_spacing),
+                          f"- {author}", (0, 0, 0),
                           font=author_font,
                           stroke_fill=(255, 255, 255),
                           stroke_width=1)

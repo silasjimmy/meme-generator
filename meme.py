@@ -1,5 +1,6 @@
 import os
 import random
+import argparse
 from quoteengine.ingestor import Ingestor
 from quoteengine.quote import QuoteModel
 from memegenerator.memeengine import MemeEngine
@@ -43,12 +44,11 @@ def generate_meme(path=None, body=None, author=None):
 
 
 if __name__ == "__main__":
-    # # @TODO Use ArgumentParser to parse the following CLI arguments
-    # # path - path to an image file
-    # # body - quote body to add to the image
-    # # author - quote author to add to the image
-    # args = None
-    # print(generate_meme(args.path, args.body, args.author))
-    p1 = os.path.join(os.getcwd(), '_data/photos/dog/xander_1.jpg')
-    print(
-        MemeEngine('memes').make_meme(p1, 'That is my titty bar', 'Gangster'))
+    parser = argparse.ArgumentParser(
+        description="Generate a motivational meme")
+    parser.add_argument('-path', type=str, help="path to the meme image")
+    parser.add_argument('-body', type=str, help="the body of the quote")
+    parser.add_argument('-author', type=str, help="the author of the quote")
+
+    args = parser.parse_args()
+    print(generate_meme(args.path, args.body, args.author))
