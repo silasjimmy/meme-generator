@@ -57,7 +57,7 @@ class MemeEngine:
                 meme = ImageDraw.Draw(meme_image)
 
                 # Generate random text anchor
-                y_anchor = randint(50, 450)
+                y_anchor = randint(100, 400)
                 x_spacing = 25
                 y_spacing = 35
 

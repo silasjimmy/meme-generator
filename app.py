@@ -5,7 +5,7 @@ from flask import Flask, render_template, abort, request
 from quoteengine.ingestor import Ingestor
 from memegenerator.memeengine import MemeEngine
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 meme = MemeEngine('./static')
 
@@ -20,15 +20,15 @@ def setup():
         './_data/DogQuotes/DogQuotesCSV.csv'
     ]
 
-    # TODO: Use the Ingestor class to parse all files in the
-    # quote_files variable
-    quotes = None
+    quotes = []
+    for f in quote_files:
+        quotes.extend(Ingestor.parse(f))
 
     images_path = "./_data/photos/dog/"
 
-    # TODO: Use the pythons standard library os class to find all
-    # images within the images images_path directory
-    imgs = None
+    imgs = []
+    for root, dirs, files in os.walk(images_path):
+        imgs = [os.path.join(root, name) for name in files]
 
     return quotes, imgs
 
@@ -40,15 +40,14 @@ quotes, imgs = setup()
 def meme_rand():
     """ Generate a random meme """
 
-    # @TODO:
-    # Use the random python standard library class to:
-    # 1. select a random image from imgs array
-    # 2. select a random quote from the quotes array
-
-    img = None
-    quote = None
+    img = random.choice(imgs)
+    quote = random.choice(quotes)
     path = meme.make_meme(img, quote.body, quote.author)
-    return render_template('meme.html', path=path)
+
+    # Extract the filename instead in order to use
+    # with url_for() in the template
+    filename = path.split('/')[-1]
+    return render_template('meme.html', path=filename)
 
 
 @app.route('/create', methods=['GET'])
@@ -68,9 +67,46 @@ def meme_post():
     #    file and the body and author form paramaters.
     # 3. Remove the temporary saved image.
 
-    path = None
+    data = request.form
+    image_url = data.get('image_url')
+    body = data.get('body')
+    author = data.get('author')
 
-    return render_template('meme.html', path=path)
+    try:
+        # Download the image
+        response = requests.get(image_url, stream=True)
+
+        # Check if the file is an image
+        file_type = response.headers.get('Content-Type').split('/')[0]
+        if file_type != 'image':
+            raise Exception("Invalid file format!")
+
+        # Save the image
+        temp_folder = os.path.join(os.getcwd(), 'tmp')
+        os.makedirs(temp_folder, exist_ok=True)
+
+        image_path = os.path.join(temp_folder, 'meme-img.jpg')
+        with open(image_path, 'wb') as file:
+            for block in response.iter_content(1024):
+                if not block:
+                    break
+
+                file.write(block)
+
+        path = meme.make_meme(image_path, body, author)
+
+        # Delete the temporary image
+        os.remove(image_path)
+    except Exception as e:
+        print("Something went wrong!", e)
+
+    # Extract the filename instead in order to use
+    # with url_for() in the template
+    if path:
+        filename = path.split('/')[-1]
+    else:
+        filename = None
+    return render_template('meme.html', path=filename)
 
 
 if __name__ == "__main__":

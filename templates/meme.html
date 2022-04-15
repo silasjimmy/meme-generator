@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Meme Generator{% endblock %}
 {% block body %}
-<img src="{{ path }}" />
+{% if path %}
+<img src="{{ url_for('static', filename=path) }}" />
+{% else %}
+<p>The image provided is not supported. Try jpeg or jpg images</p>
+{% endif %}
 {% endblock %}
