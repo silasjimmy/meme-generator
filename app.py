@@ -5,12 +5,9 @@ from flask import Flask, render_template, abort, request
 from quoteengine.ingestor import Ingestor
 from memegenerator.memeengine import MemeEngine
 
-# @TODO Import your Ingestor and MemeEngine classes
-
 app = Flask(__name__)
 
-# meme = MemeEngine('./static')
-meme = ''
+meme = MemeEngine('./static')
 
 
 def setup():
@@ -77,7 +74,4 @@ def meme_post():
 
 
 if __name__ == "__main__":
-    # app.run()
-    p1 = os.path.join(os.getcwd(), '_data/photos/dog/xander_1.jpg')
-    print(
-        MemeEngine('memes').make_meme(p1, 'That is my titty bar', 'Gangster'))
+    app.run()
