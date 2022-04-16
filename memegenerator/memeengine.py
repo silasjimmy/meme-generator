@@ -40,7 +40,7 @@ class MemeEngine:
                 # Create a name for the meme
                 img_path_name = os.path.splitext(img_path)[0]
                 meme_name = img_path_name.split('/')[-1]
-                meme_name = meme_name + '_meme.jpg'
+                meme_name = meme_name + '_meme.png'
 
                 # Resize the image
                 width_percentage = width / float(meme_image.size[0])
@@ -57,16 +57,16 @@ class MemeEngine:
                 meme = ImageDraw.Draw(meme_image)
 
                 # Generate random text anchor
-                y_anchor = randint(100, 400)
+                y_anchor = randint(20, meme_image.size[0] - 100)
                 x_spacing = 25
                 y_spacing = 35
 
-                meme.text((10, y_anchor),
+                meme.text((20, y_anchor),
                           text, (0, 0, 0),
                           font=text_font,
                           stroke_fill=(255, 255, 255),
                           stroke_width=2)
-                meme.text((10 + x_spacing, y_anchor + y_spacing),
+                meme.text((20 + x_spacing, y_anchor + y_spacing),
                           f"- {author}", (0, 0, 0),
                           font=author_font,
                           stroke_fill=(255, 255, 255),

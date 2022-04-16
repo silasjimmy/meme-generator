@@ -42,12 +42,16 @@ def meme_rand():
 
     img = random.choice(imgs)
     quote = random.choice(quotes)
-    path = meme.make_meme(img, quote.body, quote.author)
+    path = None
+
+    meme_path = meme.make_meme(img, quote.body, quote.author)
 
     # Extract the filename instead in order to use
     # with url_for() in the template
-    filename = path.split('/')[-1]
-    return render_template('meme.html', path=filename)
+    if meme_path:
+        path = meme_path.split('/')[-1]
+
+    return render_template('meme.html', path=path)
 
 
 @app.route('/create', methods=['GET'])
@@ -60,17 +64,11 @@ def meme_form():
 def meme_post():
     """ Create a user defined meme """
 
-    # @TODO:
-    # 1. Use requests to save the image from the image_url
-    #    form param to a temp local file.
-    # 2. Use the meme object to generate a meme using this temp
-    #    file and the body and author form paramaters.
-    # 3. Remove the temporary saved image.
-
     data = request.form
     image_url = data.get('image_url')
     body = data.get('body')
     author = data.get('author')
+    path = None
 
     try:
         # Download the image
@@ -93,20 +91,16 @@ def meme_post():
 
                 file.write(block)
 
-        path = meme.make_meme(image_path, body, author)
+        meme_path = meme.make_meme(image_path, body, author)
+        if meme_path:
+            path = meme_path.split('/')[-1]
 
         # Delete the temporary image
         os.remove(image_path)
     except Exception as e:
         print("Something went wrong!", e)
 
-    # Extract the filename instead in order to use
-    # with url_for() in the template
-    if path:
-        filename = path.split('/')[-1]
-    else:
-        filename = None
-    return render_template('meme.html', path=filename)
+    return render_template('meme.html', path=path)
 
 
 if __name__ == "__main__":
