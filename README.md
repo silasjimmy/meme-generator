@@ -86,7 +86,7 @@ Contains the ```ingestor``` and ```quote``` submodules.
 ```sh
 from quoteengine.ingestor import Ingestor
 
-path = 'path/to/quotes/documents.txt'
+path = '/_data/SimpleLines/SimpleLines.csv'
 quotes = Ingestor().parse(path)
 print(type(quotes))
 
@@ -122,7 +122,7 @@ Contains the ```memeengine``` submodule.
 
 **Attributes**: *output_dir (str)*
 
-**Methods**: *make_meme(img_path: str, text: str, author: str, width: int)* - creates a meme using an image specified in ```img_path``` and a quote from text and author. The meme is resized to size width. Returns the path of the created meme in the disk (for CLI) or the relative path to the static files folder (for GUI).
+**Methods**: *make_meme(img_path: str, text: str, author: str, width: int)* - creates a meme using an image specified in ```img_path``` and a quote from ```text``` and ```author```. The meme is resized to size ```width```. Returns the path of the created meme in the disk (for CLI) or the relative path to the static files folder (for GUI).
 
 **Example**:
 ```sh
@@ -130,14 +130,14 @@ from memegenerator.memeengine import MemeEngine
 
 output_directory = 'memes'
 
-img_path = '/path/to/the/image.jpg'
+img_path = '/_data/photos/dog/xander_1.jpg'
 body = 'To be or not to be'
 author = 'Wiseman'
 
 quote = MemeEngine(output_directory).make_meme(img_path, body, author, 300)
 print(quote)
 
->>> "/path/to/the/created/memes/meme.jpg"
+>>> "/tmp/xander_1_meme.jpg"
 ```
 
 ## Author
